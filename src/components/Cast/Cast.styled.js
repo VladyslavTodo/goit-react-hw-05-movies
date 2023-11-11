@@ -22,3 +22,9 @@ export const CastName = styled.p`
   color: #cbf9ff;
   text-align: center;
 `;
+
+export const AnyCast = styled.p`
+  font-size: 40px;
+  color: #cbf9ff;
+  text-align: center;
+`;

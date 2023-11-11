@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useRef, useState } from 'react';
 import { Outlet, useLocation, useParams } from 'react-router-dom';
 
-import { getMovieDetails } from 'components/services/services';
+import { getMovieDetails } from 'services/services';
 
 import {
   BoldText,
@@ -23,14 +23,18 @@ const MoviesDetails = () => {
   const [movie, setMovie] = useState(null);
   const location = useLocation();
   const backLink = useRef(location.state?.from ?? '/');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
       try {
+        setIsLoading(true);
         const data = await getMovieDetails(id);
         setMovie(data);
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -44,6 +48,7 @@ const MoviesDetails = () => {
   return (
     <>
       <LinkLi to={backLink.current}>Back in black</LinkLi>
+      {isLoading && <Loader />}
       <ItemCast>
         <Poster
           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}

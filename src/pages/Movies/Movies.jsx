@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { getMovieSearch } from 'components/services/services';
+import { getMovieSearch } from 'services/services';
 
 import MoviesList from 'components/MoviesList/MoviesList';
 import SearchForm from 'components/SearchForm/SearchForm ';
@@ -36,7 +36,8 @@ const Movies = () => {
   return (
     <>
       <SearchForm onSearchMovies={onSearchMovies} />
-      {isLoading ? <Loader /> : <MoviesList movies={movies} />}
+      {isLoading && <Loader />}
+      {movies && <MoviesList movies={movies} />}
     </>
   );
 };

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { getMovieReviews } from 'components/services/services';
+import { getMovieReviews } from 'services/services';
 
 import {
   Author,
@@ -12,18 +12,23 @@ import {
   Content,
   AnyReviews,
 } from './Reviews.styled';
+import Loader from 'components/Loader/Loader';
 
 const Reviews = () => {
   const { id } = useParams();
   const [reviews, setReviews] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchMovieReviews = async () => {
       try {
+        setIsLoading(true);
         const data = await getMovieReviews(id);
         setReviews(data.results);
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -32,9 +37,8 @@ const Reviews = () => {
 
   return (
     <>
-      {reviews.length === 0 ? (
-        <AnyReviews>We don't have any reviews for this movie</AnyReviews>
-      ) : (
+      {isLoading && <Loader />}
+      {!isLoading && reviews.length > 0 && (
         <List>
           {reviews?.map(item => (
             <Item key={item.id}>
@@ -53,6 +57,9 @@ const Reviews = () => {
             </Item>
           ))}
         </List>
+      )}
+      {!isLoading && reviews.length === 0 && (
+        <AnyReviews>We don't have any reviews for this movie</AnyReviews>
       )}
     </>
   );

@@ -1,16 +1,17 @@
 import React, { lazy } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { Container } from './App.styled';
 
 import Layout from '../Layout/Layout';
 
-const Home = lazy(() => import('../../pages/Home'));
-const Movies = lazy(() => import('../../pages/Movies'));
-const MoviesDetails = lazy(() => import('../../pages/MoviesDetails'));
+const Home = lazy(() => import('../../pages/Home/Home'));
+const Movies = lazy(() => import('../../pages/Movies/Movies'));
+const MoviesDetails = lazy(() =>
+  import('../../pages/MoviesDetails/MoviesDetails')
+);
 const Reviews = lazy(() => import('../Reviews/Reviews'));
 const Cast = lazy(() => import('../Cast/Cast'));
-const NotFound = lazy(() => import('../../pages/NotFound'));
 
 const App = () => {
   return (
@@ -23,7 +24,7 @@ const App = () => {
             <Route path="cast" element={<Cast />} />
             <Route path="reviews" element={<Reviews />} />
           </Route>
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Route>
       </Routes>
     </Container>
